@@ -121,7 +121,7 @@ ACTIVITYMAIN.XML :-
 
 ![a1](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/e8fb5c6b-5c6a-4055-8470-c0dce6c7afb8)
 ![a2](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/0f475948-91f6-4bd1-8934-6aa08b46d4df)
-![a3](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/6f196660-3d85-4052-a25b-aa51b5bd254a)
+
 
 ## RESULT:
 Thus a Simple Android Application create a navigate button using Implicit Intent to display the google page using Android Studio is developed and executed successfully.
