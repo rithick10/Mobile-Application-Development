@@ -1,8 +1,10 @@
-# Ex.No:9 Develop a simple calculator using android studio.
+
+# Ex.No:5 Create Your Own Content Providers to get Contacts details.
+
 
 ## AIM:
 
-To develop a program to develop a simple calculator in Android Studio.
+To create your own content providers to get contacts details using Android Studio.
 
 ## EQUIPMENTS REQUIRED:
 
@@ -12,176 +14,115 @@ Android Studio(Latest Version)
 
 Step 1: Open Android Stdio and then click on File -> New -> New project.
 
-Step 2: Then type the Application name as calculator and click Next. 
+Step 2: Then type the Application name as “contentprovider″ and click Next. 
 
 Step 3: Then select the Minimum SDK as shown below and click Next.
 
 Step 4: Then select the Empty Activity and click Next. Finally click Finish.
 
-Step 5: Design layout using UI components in activity_main.xml.
+Step 5: Design layout in activity_main.xml.
 
-Step 6: Display the calculator operation in MainActivity file.
+Step 6: Get contacts details and Display details give in MainActivity file.
 
 Step 7: Save and run the application.
 
 ## PROGRAM:
 ```
 /*
-Program to print the text “calculator operation”.
-Developed by: Rithick S
-Registeration Number : 212221220043
+Program to print the text create your own content providers to get contacts details.
+Developed by: Kadakarmudu Gopi Satheesh Kumar
+Registeration Number : 212221220023
 */
 ```
-**XML CODE:**
-
+**XML FILE:**
+    
     <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/etNum1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Number 1"
-        android:inputType="numberDecimal" />
-
-    <EditText
-        android:id="@+id/etNum2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Number 2"
-        android:inputType="numberDecimal" />
-
     <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="match_parent"
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F44336"
-        android:text="Add"
-        android:textColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/btnSub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#9C27B0"
-        android:text="Subtract" />
-
-    <Button
-        android:id="@+id/btnMul"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFC107"
-        android:text="Multiply" />
-
-    <Button
-        android:id="@+id/btnDiv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#4CAF50"
-        android:text="Divide" />
-
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Result: "
-        android:textSize="18sp" />
-
-    </LinearLayout>
+        android:layout_marginStart="129dp"
+        android:layout_marginTop="302dp"
+        android:text="GET CONTACTS"
+        android:onClick="btnGetContactPressed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
     
-**MAIN CODE:**
+**MAINACTIVITY:**
 
-      package com.example.calculator;
+    package com.example.contactsgetter;
 
     import androidx.appcompat.app.AppCompatActivity;
+    import androidx.core.app.ActivityCompat;
+    import androidx.core.content.ContextCompat;
 
+    import android.Manifest;
+    import android.annotation.SuppressLint;
+    import android.content.ContentResolver;
+    import android.content.pm.PackageManager;
+    import android.database.Cursor;
+    import android.net.Uri;
     import android.os.Bundle;
+    import android.provider.ContactsContract;
+    import android.util.Log;
     import android.view.View;
-    import android.widget.Button;
-    import android.widget.EditText;
-    import android.widget.TextView;
+
 
     public class MainActivity extends AppCompatActivity {
-
-    EditText num1, num2;
-    Button btnAdd, btnSub, btnMul, btnDiv;
-    TextView result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        num1 = findViewById(R.id.etNum1);
-        num2 = findViewById(R.id.etNum2);
-        btnAdd = findViewById(R.id.btnAdd);
-        btnSub = findViewById(R.id.btnSub);
-        btnMul = findViewById(R.id.btnMul);
-        btnDiv = findViewById(R.id.btnDiv);
-        result = findViewById(R.id.tvResult);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double number1 = Double.parseDouble(num1.getText().toString());
-                double number2 = Double.parseDouble(num2.getText().toString());
-                double sum = number1 + number2;
-                result.setText("Result: " + sum);
-            }
-        });
+    //        Button show = (Button) findViewById(R.id.button2);
+    //        show.setOnClickListener(view->
+    //        {
+    //            getPhoneContacts();
+    //        });
 
-        btnSub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double number1 = Double.parseDouble(num1.getText().toString());
-                double number2 = Double.parseDouble(num2.getText().toString());
-                double difference = number1 - number2;
-                result.setText("Result: " + difference);
-            }
-        });
+    }
+    private void getPhoneContacts(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_CONTACTS},0);
 
-        btnMul.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double number1 = Double.parseDouble(num1.getText().toString());
-                double number2 = Double.parseDouble(num2.getText().toString());
-                double product = number1 * number2;
-                result.setText("Result: " + product);
+        }
+        ContentResolver contentResolver = getContentResolver();
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        Cursor cursor = contentResolver.query(uri,null,null,null,null);
+        Log.i("CONTACT_PROVIDER_DEMO","TOTAL # COUNTS :::"+cursor.getCount());
+        if(cursor.getCount() > 0)
+        {
+            while(cursor.moveToNext()){
+                @SuppressLint("Range") String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                @SuppressLint("Range") String contactNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                Log.i("Content_provider_demo","Name: # "+contactName+"Number: # "+contactNumber);
             }
-        });
 
-        btnDiv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double number1 = Double.parseDouble(num1.getText().toString());
-                double number2 = Double.parseDouble(num2.getText().toString());
-                if (number2 != 0) {
-                    double quotient = number1 / number2;
-                    result.setText("Result: " + quotient);
-                } else {
-                    result.setText("Cannot divide by zero");
-                }
-            }
-        });
+        }
+    }
+
+    public void btnGetContactPressed(View view) {
+        getPhoneContacts();
     }
     }
+
+
 
 ## OUTPUT
+![contact1](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/dcb91e2d-aed4-442b-af9b-8f31343ab447)
+![contact-output](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/44dc5819-c9d3-4372-8dab-6f04e0462d20)
 
-
-![ex91](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/402a9290-d1e7-4988-90c7-5a60d0cd3462)
-![ex92](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/d9db3bb7-edde-4c02-bb98-bf063dd0cfe9)
-![ex93](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/45461b58-15a4-4839-95c6-1199c7f63c57)
-![ex94](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/8271b03e-54c6-4392-bb31-2474c3fb946a)
- ![ex95](https://github.com/KGSatheeshKumar/Mobile-Application-Development/assets/128453421/25cf2358-d468-47c5-90ec-edcf03427572)
 
 
 ## RESULT
-Thus a Simple Android Application develop a program to create simple calculator in Android Studio is developed and executed successfully.
+Thus a Simple Android Application create your own content providers to get contacts details using Android Studio is developed and executed successfully.
